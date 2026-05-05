@@ -33,13 +33,9 @@ spec:
                 secretKeyRef:
                   name: backstage-secrets
                   key: GITHUB_TOKEN
-          command: ["node"]
-          args: 
-            - "--loader"
-            - "ts-node/esm"
-            - "packages/backend/src/index.ts"
-            - "--config"
-            - "app-config.production.yaml"
+          workingDir: /app
+          command: ["yarn"]
+          args: ["workspace", "backend", "start"]
           ports:
             - containerPort: 7007
               name: backend-port
