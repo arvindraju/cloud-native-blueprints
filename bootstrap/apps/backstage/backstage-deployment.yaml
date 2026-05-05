@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: arvindraju/backstage-lab:v1 # Replace this!
+          image: arvindraju/backstage-lab:v1
+          imagePullPolicy: Always # Forces cluster to pull new image
           env:
             - name: POSTGRES_HOST
               value: "postgres"
@@ -25,7 +26,7 @@ spec:
               value: "backstage"
             - name: POSTGRES_PASSWORD
               value: "backstage"
-            - name: GITHUB_TOKEN # Required for your Scaffolder/Catalog
+            - name: GITHUB_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: backstage-secrets
