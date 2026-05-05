@@ -33,9 +33,10 @@ spec:
                 secretKeyRef:
                   name: backstage-secrets
                   key: GITHUB_TOKEN
-          command: ["npx"]
+          command: ["node"]
           args: 
-            - "ts-node-esm"
+            - "--loader"
+            - "ts-node/esm"
             - "packages/backend/src/index.ts"
             - "--config"
             - "app-config.production.yaml"
