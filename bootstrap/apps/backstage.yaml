@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/arvindbraju/cloud-native-blueprints.git
+    repoURL: https://github.com/arvindraju/cloud-native-blueprints.git
     targetRevision: HEAD
     path: bootstrap/apps/backstage
   destination:
