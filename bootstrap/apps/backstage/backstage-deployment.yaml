@@ -1,23 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backstage
+  namespace: backstage
+  labels:
+    app: backstage
 spec:
-  containers:
-    - name: backstage
-      image: arvindraju/backstage-lab:v1
-      imagePullPolicy: Always
-      env:
-        - name: POSTGRES_HOST
-          value: "postgres"
-        - name: POSTGRES_PORT
-          value: "5432"
-        - name: POSTGRES_USER
-          value: "backstage"
-        - name: POSTGRES_PASSWORD
-          value: "backstage"
-        - name: GITHUB_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: backstage-secrets
-              key: GITHUB_TOKEN
-      command: ["npx"]
-      args: ["ts-node-esm", "packages/backend/src/index.ts", "--config", "app-config.production.yaml"]
-      ports:
-        - containerPort: 7007
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backstage
+  template:
+    metadata:
+      labels:
+        app: backstage
+    spec:
+      containers:
+        - name: backstage
+          image: arvindraju/backstage-lab:v1
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_HOST
+              value: "postgres"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              value: "backstage"
+            - name: POSTGRES_PASSWORD
+              value: "backstage"
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: backstage-secrets
+                  key: GITHUB_TOKEN
+          command: ["npx"]
+          args: 
+            - "ts-node-esm"
+            - "packages/backend/src/index.ts"
+            - "--config"
+            - "app-config.production.yaml"
+          ports:
+            - containerPort: 7007
+              name: backend-port
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1.5Gi"
+            requests:
+              cpu: "500m"
+              memory: "768Mi"
