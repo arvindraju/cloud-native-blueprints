@@ -19,6 +19,14 @@ spec:
         - name: backstage
           image: arvindraju/backstage:latest
           imagePullPolicy: Always
+          command: ["node"]
+          args: 
+            - "packages/backend/dist/index.cjs.js"
+            - "--config"
+            - "app-config.yaml"
+            - "--config"
+            - "app-config.production.yaml"
+          # END OF ADDED LINES
           env:
             - name: POSTGRES_HOST
               value: "postgres"
