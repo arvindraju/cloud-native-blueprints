@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: arvindraju/backstage-lab:v1
+          image: arvindraju/backstage:latest
           imagePullPolicy: Always
           env:
             - name: POSTGRES_HOST
