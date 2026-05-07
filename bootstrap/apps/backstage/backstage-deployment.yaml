@@ -1,10 +1,9 @@
+# kubernetes/backstage.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backstage
   namespace: backstage
-  labels:
-    app: backstage
 spec:
   replicas: 1
   selector:
@@ -17,16 +16,11 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: arvindraju/backstage:latest
+          image: backstage:1.0.0
           imagePullPolicy: Always
-          command: ["node"]
-          args: 
-            - "packages/backend/dist/index.cjs.js"
-            - "--config"
-            - "app-config.yaml"
-            - "--config"
-            - "app-config.production.yaml"
-          # END OF ADDED LINES
+          ports:
+            - name: http
+              containerPort: 7007
           env:
             - name: POSTGRES_HOST
               value: "postgres"
@@ -41,16 +35,13 @@ spec:
                 secretKeyRef:
                   name: backstage-secrets
                   key: GITHUB_TOKEN
-          workingDir: /app
-          command: ["yarn"]
-          args: ["workspace", "backend", "start"]
-          ports:
-            - containerPort: 7007
-              name: backend-port
-          resources:
-            limits:
-              cpu: "1"
-              memory: "1.5Gi"
-            requests:
-              cpu: "500m"
-              memory: "768Mi"
+# Uncomment if health checks are enabled in your app:
+# https://backstage.io/docs/plugins/observability#health-checks
+#          readinessProbe:
+#            httpGet:
+#              port: 7007
+#              path: /healthcheck
+#          livenessProbe:
+#            httpGet:
+#              port: 7007
+#              path: /healthcheck
